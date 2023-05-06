@@ -2,6 +2,7 @@
 
 namespace Brackets\AdvancedLogger\Providers;
 
+use Brackets\AdvancedLogger\Listeners\RequestLoggerListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 /**
@@ -24,6 +25,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        \Brackets\AdvancedLogger\Listeners\RequestLoggerListener::class,
+        RequestLoggerListener::class,
     ];
 }

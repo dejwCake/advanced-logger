@@ -8,7 +8,7 @@ class RequestLoggerTest extends TestCase
 {
 
     /** @test */
-    public function request_is_logged_in_file()
+    public function request_is_logged_in_file(): void
     {
         $response = $this->get('/');
         $response->assertStatus(200);
@@ -17,7 +17,7 @@ class RequestLoggerTest extends TestCase
     }
 
     /** @test */
-    public function excluded_path_is_not_logged()
+    public function excluded_path_is_not_logged(): void
     {
         $response = $this->get('/excluded');
         $response->assertStatus(200);

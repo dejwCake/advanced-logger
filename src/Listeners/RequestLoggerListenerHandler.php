@@ -4,6 +4,7 @@ namespace Brackets\AdvancedLogger\Listeners;
 
 use Brackets\AdvancedLogger\Jobs\RequestLogJob;
 use Brackets\AdvancedLogger\Services\Benchmark;
+use Exception;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class RequestLoggerListenerHandler
 
     /**
      * @param RequestHandled $event
-     * @throws \Exception
+     * @throws Exception
      */
     public function handle(RequestHandled $event): void
     {
@@ -27,7 +28,7 @@ class RequestLoggerListenerHandler
             $task = app(RequestLogJob::class, ['request' => $event->request, 'response' => $event->response]);
             $queueName = config('advanced-logger.request.queue');
             if (is_null($queueName)) {
-                $task->handle();
+                $task->handle($event->request);
             } else {
                 $this->dispatch(is_string($queueName) ? $task->onQueue($queueName) : $task);
             }

@@ -138,7 +138,7 @@ class RequestInterpolation extends BaseInterpolation
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     protected function getUser(): ?string
     {

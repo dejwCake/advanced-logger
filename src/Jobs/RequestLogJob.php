@@ -20,11 +20,11 @@ class RequestLogJob implements ShouldQueue
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
     /**
      * @var Response
      */
-    protected $response;
+    protected Response $response;
 
     /**
      * RequestLogJob constructor.

@@ -14,11 +14,11 @@ abstract class BaseInterpolation implements InterpolationContract
     /**
      * @var Request
      */
-    protected $request;
+    protected Request $request;
     /**
      * @var Response
      */
-    protected $response;
+    protected Response $response;
 
     /**
      * @param Request $request
@@ -50,10 +50,10 @@ abstract class BaseInterpolation implements InterpolationContract
     /**
      * Convert array or null to string
      *
-     * @param $value
+     * @param array|string|null $value
      * @return string
      */
-    protected function convertToString($value): string
+    protected function convertToString(array|string|null $value): string
     {
         if (is_array($value)) {
             $value = json_encode($value);

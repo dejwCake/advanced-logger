@@ -12,13 +12,13 @@ class Benchmark
     /**
      * @var array
      */
-    protected static $timers = [];
+    protected static array $timers = [];
 
     /**
      * @param string $name
-     * @return mixed
+     * @return string|float
      */
-    public static function start(string $name)
+    public static function start(string $name): string|float
     {
         $start = microtime(true);
         static::$timers[$name] = [

@@ -7,9 +7,5 @@ namespace Brackets\AdvancedLogger\Contracts;
  */
 interface InterpolationContract
 {
-    /**
-     * @param string $text
-     * @return string
-     */
     public function interpolate(string $text): string;
 }

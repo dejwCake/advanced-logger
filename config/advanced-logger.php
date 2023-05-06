@@ -1,5 +1,7 @@
 <?php
 
+use Brackets\AdvancedLogger\Handlers\RequestLoggerHandler;
+
 return [
 
     'request' => [
@@ -15,7 +17,7 @@ return [
          */
 
         'handlers' => [
-            Brackets\AdvancedLogger\Handlers\RequestLoggerHandler::class
+            RequestLoggerHandler::class
         ],
 
         /*

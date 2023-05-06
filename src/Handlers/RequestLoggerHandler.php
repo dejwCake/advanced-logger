@@ -3,7 +3,7 @@
 namespace Brackets\AdvancedLogger\Handlers;
 
 use Monolog\Handler\RotatingFileHandler;
-use Monolog\Logger;
+use Monolog\Level;
 
 /**
  * Class RequestLoggerHandler
@@ -13,20 +13,20 @@ class RequestLoggerHandler extends RotatingFileHandler
     /**
      * RequestLoggerHandler constructor.
      *
-     * @param null $filename
+     * @param string $filename
      * @param int $maxFiles
-     * @param int $level
+     * @param int|string|Level $level
      * @param bool $bubble
-     * @param null $filePermission
+     * @param int|null $filePermission
      * @param bool $useLocking
      */
     public function __construct(
-        $filename = null,
-        $maxFiles = 0,
-        $level = Logger::DEBUG,
-        $bubble = true,
-        $filePermission = null,
-        $useLocking = false
+        ?string $filename = null,
+        int $maxFiles = 0,
+        int|string|Level $level = Level::Debug,
+        bool $bubble = true,
+        ?int $filePermission = null,
+        bool $useLocking = false,
     ) {
         $filename = !is_null($filename) ? $filename : config(
             'advanced-logger.request.file',

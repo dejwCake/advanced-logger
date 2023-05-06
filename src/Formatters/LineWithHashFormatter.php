@@ -4,6 +4,7 @@ namespace Brackets\AdvancedLogger\Formatters;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
 use Monolog\Formatter\LineFormatter;
+use Monolog\LogRecord;
 
 /**
  * Class LineWithHashFormatter
@@ -13,10 +14,10 @@ class LineWithHashFormatter extends LineFormatter
     public const KEY = 'hash';
 
     /**
-     * @param array $record
-     * @return array|mixed|string|string[]|void|null
+     * @param LogRecord $record
+     * @return string
      */
-    public function format(array $record): string
+    public function format(LogRecord $record): string
     {
         $output = parent::format($record);
         if (false !== strpos($output, '%' . self::KEY . '%')) {

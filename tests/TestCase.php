@@ -4,6 +4,7 @@ namespace Brackets\AdvancedLogger\Test;
 
 use Brackets\AdvancedLogger\AdvancedLoggerServiceProvider;
 use Carbon\Carbon;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -33,7 +34,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -70,7 +71,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
