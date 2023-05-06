@@ -51,3 +51,18 @@ to `daily` channel. The resulted code should looks like
 ```
 
 This log modifier can be used also in other channels, however it uses extended `LineFormatter`.
+
+## Run tests
+
+To run tests use this docker environment.
+
+```shell
+  docker-compose run -it test vendor/bin/phpunit
+```
+
+To switch between postgresql and mariadb change in `docker-compose.yml` DB_CONNECTION environmental variable:
+
+```git
+- DB_CONNECTION: pgsql
++ DB_CONNECTION: mysql
+```
