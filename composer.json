@@ -1,12 +1,12 @@
 {
     "name": "dejwcake/advanced-logger",
     "description": "Advanced logger",
+    "license": "MIT",
+    "type": "project",
     "keywords": [
         "logger",
         "request logger"
     ],
-    "license": "MIT",
-    "type": "project",
     "authors": [
         {
             "name": "David Běhal",
@@ -17,21 +17,21 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^10.0",
+        "ext-json": "*",
         "illuminate/http": "^10.0",
-        "monolog/monolog": "^3.0",
-        "ext-json": "*"
+        "illuminate/support": "^10.0",
+        "monolog/monolog": "^3.0"
     },
     "require-dev": {
         "laravel/framework": "^10.0",
-        "phpunit/phpunit": "^10.1",
-        "orchestra/testbench": "~8.5"
+        "orchestra/testbench": "~8.5",
+        "phpunit/phpunit": "^10.1"
     },
     "autoload": {
-        "classmap": [],
         "psr-4": {
             "Brackets\\AdvancedLogger\\": "src/"
-        }
+        },
+        "classmap": []
     },
     "autoload-dev": {
         "psr-4": {
