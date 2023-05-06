@@ -43,9 +43,6 @@
             "providers": [
                 "Brackets\\AdvancedLogger\\AdvancedLoggerServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-master": "3.0-dev"
         }
     }
 }
