@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   test:
-    image: dejwcake/php8.1:1
+    image: dejwcake/php8.2:1
     environment:
       DB_CONNECTION: pgsql
     volumes:
