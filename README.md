@@ -8,11 +8,11 @@ This package has been inspired by package https://github.com/andersao/laravel-re
 
 ### Composer
 
-Run `composer require brackets/advanced-logger` in your terminal.
+Run `composer require dejwcake/advanced-logger` in your terminal.
 
 ### Laravel
 
-This package is for Laravel 5.5, 5.6 and 5.7, so it has auto discovery.
+This package is for Laravel 10 or 11.
 
 To publish config file, run
 
@@ -24,7 +24,7 @@ php artisan vendor:publish --provider="Brackets\AdvancedLogger\AdvancedLoggerSer
 
 All options are described in `config/advanced-logger.php`.
 
-## Using request hash in standard log file in Laravel 5.7
+## Using request hash in standard log file
 
 If you would like to have request identifier in you standard log, to match log events with request you could add to `config/logging.php`
 
