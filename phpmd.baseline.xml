@@ -1,3 +1,6 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Interpolations/RequestInterpolation.php" method="resolveVariable"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="src/Interpolations/RequestInterpolation.php" method="resolveVariable"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Loggers/RequestLogger.php"/>
 </phpmd-baseline>

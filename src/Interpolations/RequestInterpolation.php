@@ -11,6 +11,10 @@ class RequestInterpolation extends BaseInterpolation
 {
     public function interpolate(string $text): string
     {
+        if ($this->request === null) {
+            return $text;
+        }
+
         $variables = explode(' ', $text);
         foreach ($variables as $variable) {
             $matches = [];
@@ -131,10 +135,6 @@ class RequestInterpolation extends BaseInterpolation
 
     protected function getUser(): ?string
     {
-        return !is_null($this->request->user()) && !is_null(
-            $this->request->user()->email,
-        )
-            ? $this->request->user()->email
-            : null;
+        return $this->request?->user()?->email;
     }
 }

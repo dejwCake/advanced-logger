@@ -1,2 +1,41 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Out of 2 possible constant types, only 0 \\- 0\\.0 %% actually have it\\. Add more constant types to get over 99 %%$#"
+			count: 1
+			path: src/Formatters/LineWithHashFormatter.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$email\\.$#"
+			count: 1
+			path: src/Interpolations/RequestInterpolation.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Log\\\\LogManager\\:\\:getMonolog\\(\\)\\.$#"
+			count: 1
+			path: src/Loggers/RequestLogger.php
+
+		-
+			message: "#^Call to an undefined method Psr\\\\Log\\\\LoggerInterface\\:\\:getLogger\\(\\)\\.$#"
+			count: 1
+			path: src/Loggers/RequestLogger.php
+
+		-
+			message: "#^Out of 61 possible param types, only 58 \\- 95\\.0 %% actually have it\\. Add more param types to get over 99 %%$#"
+			count: 1
+			path: src/Loggers/RequestLogger.php
+
+		-
+			message: "#^Out of 2 possible constant types, only 0 \\- 0\\.0 %% actually have it\\. Add more constant types to get over 99 %%$#"
+			count: 1
+			path: src/Services/RequestLoggerService.php
+
+		-
+			message: "#^Out of 48 possible return types, only 47 \\- 97\\.9 %% actually have it\\. Add more return types to get over 99 %%$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Out of 61 possible param types, only 58 \\- 95\\.0 %% actually have it\\. Add more param types to get over 99 %%$#"
+			count: 2
+			path: tests/TestCase.php

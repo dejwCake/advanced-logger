@@ -12,6 +12,10 @@ class ResponseInterpolation extends BaseInterpolation
 {
     public function interpolate(string $text): string
     {
+        if ($this->response === null) {
+            return $text;
+        }
+
         $variables = explode(' ', $text);
         foreach ($variables as $variable) {
             $matches = [];

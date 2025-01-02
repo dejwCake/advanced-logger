@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseInterpolation implements InterpolationContract
 {
-    protected Request $request;
-    protected Response $response;
+    protected ?Request $request;
+    protected ?Response $response;
 
     public function setRequest(Request $request): void
     {
@@ -28,7 +28,7 @@ abstract class BaseInterpolation implements InterpolationContract
         return preg_replace('/\s/', "\\s", $text);
     }
 
-    protected function convertToString(array|string|null $value): string
+    protected function convertToString(array|string|int|null $value): string
     {
         if (is_array($value)) {
             $value = json_encode($value);
@@ -37,7 +37,7 @@ abstract class BaseInterpolation implements InterpolationContract
             $value = 'null';
         }
 
-        return $value;
+        return (string) $value;
     }
 
     protected function formatSizeUnits(int $bytes): string
