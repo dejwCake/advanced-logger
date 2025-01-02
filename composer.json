@@ -18,13 +18,13 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "illuminate/http": "^10.0 | ^11.0",
-        "illuminate/support": "^10.0 | ^11.0",
+        "illuminate/http": "^10.0 || ^11.0",
+        "illuminate/support": "^10.0 || ^11.0",
         "monolog/monolog": "^3.0"
     },
     "require-dev": {
         "larastan/larastan": "^2.9",
-        "laravel/framework": "^10.0 | ^11.0",
+        "laravel/framework": "^10.0 || ^11.0",
         "orchestra/testbench": "^9.0",
         "phpunit/phpunit": "^10.1"
     },
