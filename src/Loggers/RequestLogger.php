@@ -7,19 +7,10 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Stringable;
 
-/**
- * Class BaseRequestLogger
- */
 class RequestLogger implements LoggerInterface
 {
-    /**
-     * @var Logger;
-     */
     protected Logger $monolog;
 
-    /**
-     * BaseRequestLogger constructor.
-     */
     public function __construct()
     {
         if (version_compare(app()->version(), '5.5.99', '<=')) {
@@ -43,10 +34,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log an alert message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function alert(string|Stringable $message, array $context = []): void
     {
@@ -55,10 +42,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log a critical message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function critical(string|Stringable $message, array $context = []): void
     {
@@ -67,10 +50,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log an error message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function error(string|Stringable $message, array $context = []): void
     {
@@ -79,10 +58,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log a warning message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function warning(string|Stringable $message, array $context = []): void
     {
@@ -91,10 +66,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log a notice to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function notice(string|Stringable $message, array $context = []): void
     {
@@ -103,10 +74,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log an informational message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function info(string|Stringable $message, array $context = []): void
     {
@@ -115,10 +82,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Log a debug message to the logs.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function debug(string|Stringable $message, array $context = []): void
     {
@@ -128,10 +91,6 @@ class RequestLogger implements LoggerInterface
 
     /**
      * System is unusable.
-     *
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function emergency(string|Stringable $message, array $context = []): void
     {
@@ -142,9 +101,6 @@ class RequestLogger implements LoggerInterface
      * Log a message to the logs.
      *
      * @param string $level
-     * @param string|Stringable $message
-     * @param array $context
-     * @return void
      */
     public function log($level, string|Stringable $message, array $context = []): void
     {
@@ -153,24 +109,15 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Register a file log handler.
-     *
-     * @param string $path
-     * @param string $level
-     * @return void
      */
-    public function useFiles($path, $level = 'debug')
+    public function useFiles(string $path, string $level = 'debug'): void
     {
     }
 
     /**
      * Register a daily file log handler.
-     *
-     * @param string $path
-     * @param int $days
-     * @param string $level
-     * @return void
      */
-    public function useDailyFiles($path, $days = 0, $level = 'debug')
+    public function useDailyFiles(string $path, int $days = 0, string $level = 'debug'): void
     {
     }
 }

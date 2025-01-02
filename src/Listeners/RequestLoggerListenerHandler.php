@@ -9,15 +9,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
 
-/**
- * Class RequestLoggerListenerHandler
- */
 class RequestLoggerListenerHandler
 {
     use DispatchesJobs;
 
     /**
-     * @param RequestHandled $event
      * @throws Exception
      */
     public function handle(RequestHandled $event): void
@@ -28,7 +24,7 @@ class RequestLoggerListenerHandler
             $task = app(RequestLogJob::class, ['request' => $event->request, 'response' => $event->response]);
             $queueName = config('advanced-logger.request.queue');
             if (is_null($queueName)) {
-                $task->handle($event->request);
+                $task->handle();
             } else {
                 $this->dispatch(is_string($queueName) ? $task->onQueue($queueName) : $task);
             }
@@ -37,9 +33,6 @@ class RequestLoggerListenerHandler
 
     /**
      * Check if current path is not excluded
-     *
-     * @param Request $request
-     * @return bool
      */
     protected function excluded(Request $request): bool
     {

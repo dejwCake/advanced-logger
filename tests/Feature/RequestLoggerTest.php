@@ -7,8 +7,7 @@ use Brackets\AdvancedLogger\Test\TestCase;
 class RequestLoggerTest extends TestCase
 {
 
-    /** @test */
-    public function request_is_logged_in_file(): void
+    public function testRequestIsLoggedInFile(): void
     {
         $response = $this->get('/');
         $response->assertStatus(200);
@@ -16,13 +15,11 @@ class RequestLoggerTest extends TestCase
         $this->assertStringContainsString(' GET http://localhost', file_get_contents($this->getRequestLogFileName()));
     }
 
-    /** @test */
-    public function excluded_path_is_not_logged(): void
+    public function testExcludedPathIsNotLogged(): void
     {
         $response = $this->get('/excluded');
         $response->assertStatus(200);
         $this->assertFileDoesNotExist($this->getRequestLogFileName());
-        //We are deleting request file, so there should not be a file
-//        $this->assertNotContains(' GET http://localhost/excluded', file_get_contents($this->getRequestLogFileName()));
+        //We are deleting request file, so there should not be a files
     }
 }

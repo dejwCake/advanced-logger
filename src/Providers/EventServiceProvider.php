@@ -5,15 +5,12 @@ namespace Brackets\AdvancedLogger\Providers;
 use Brackets\AdvancedLogger\Listeners\RequestLoggerListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-/**
- * Class EventServiceProvider
- */
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event listener mappings for the application.
      *
-     * @var array
+     * @var array<class-string>
      */
     protected $listen = [
 
@@ -22,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
     /**
      * The subscriber classes to register.
      *
-     * @var array
+     * @var array<class-string>
      */
     protected $subscribe = [
         RequestLoggerListener::class,

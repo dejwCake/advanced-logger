@@ -5,15 +5,8 @@ namespace Brackets\AdvancedLogger\Interpolations;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
-/**
- * Class RequestInterpolation
- */
 class RequestInterpolation extends BaseInterpolation
 {
-    /**
-     * @param string $text
-     * @return string
-     */
     public function interpolate(string $text): string
     {
         $variables = explode(' ', $text);
@@ -28,11 +21,6 @@ class RequestInterpolation extends BaseInterpolation
         return $text;
     }
 
-    /**
-     * @param string $raw
-     * @param string $variable
-     * @return string
-     */
     protected function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
@@ -118,9 +106,6 @@ class RequestInterpolation extends BaseInterpolation
         return $raw;
     }
 
-    /**
-     * @return string
-     */
     protected function getQuery(): string
     {
         $query = $this->request->query();
@@ -137,9 +122,6 @@ class RequestInterpolation extends BaseInterpolation
         return $queryString;
     }
 
-    /**
-     * @return string|null
-     */
     protected function getUser(): ?string
     {
         if (!is_null($this->request->user()) && !is_null($this->request->user()->email)) {

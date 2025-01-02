@@ -5,16 +5,8 @@ namespace Brackets\AdvancedLogger\Listeners;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 
-/**
- * Class RequestLoggerListener
- */
 class RequestLoggerListener
 {
-    /**
-     * Register the listeners for the subscriber.
-     *
-     * @param Dispatcher $events
-     */
     public function subscribe(Dispatcher $events): void
     {
         $events->listen(

@@ -6,53 +6,26 @@ use Brackets\AdvancedLogger\Contracts\InterpolationContract;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class BaseInterpolation
- */
 abstract class BaseInterpolation implements InterpolationContract
 {
-    /**
-     * @var Request
-     */
     protected Request $request;
-    /**
-     * @var Response
-     */
     protected Response $response;
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * @param Response $response
-     */
     public function setResponse(Response $response): void
     {
         $this->response = $response;
     }
 
-    /**
-     * Escape string
-     *
-     * @param string $text
-     * @return string
-     */
     protected function escape(string $text): string
     {
         return preg_replace('/\s/', "\\s", $text);
     }
 
-    /**
-     * Convert array or null to string
-     *
-     * @param array|string|null $value
-     * @return string
-     */
     protected function convertToString(array|string|null $value): string
     {
         if (is_array($value)) {
@@ -64,10 +37,6 @@ abstract class BaseInterpolation implements InterpolationContract
         return $value;
     }
 
-    /**
-     * @param int $bytes
-     * @return string
-     */
     protected function formatSizeUnits(int $bytes): string
     {
         if ($bytes >= 1073741824) {

@@ -7,17 +7,12 @@ use Brackets\AdvancedLogger\Services\Benchmark;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\ServiceProvider;
 
-/**
- * Class AdvancedLoggerServiceProvider
- */
 class AdvancedLoggerServiceProvider extends ServiceProvider
 {
     use DispatchesJobs;
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -29,8 +24,6 @@ class AdvancedLoggerServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {

@@ -3,17 +3,11 @@
 namespace Brackets\AdvancedLogger\Interpolations;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
+use Exception;
 use Illuminate\Support\Str;
 
-/**
- * Class ResponseInterpolation
- */
 class ResponseInterpolation extends BaseInterpolation
 {
-    /**
-     * @param string $text
-     * @return string
-     */
     public function interpolate(string $text): string
     {
         $variables = explode(' ', $text);
@@ -28,11 +22,6 @@ class ResponseInterpolation extends BaseInterpolation
         return $text;
     }
 
-    /**
-     * @param string $raw
-     * @param string $variable
-     * @return string
-     */
     protected function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
@@ -73,11 +62,6 @@ class ResponseInterpolation extends BaseInterpolation
         return $raw;
     }
 
-    /**
-     * Get length of response
-     *
-     * @return string
-     */
     protected function getContentLength(): string
     {
         $path = storage_path('framework' . DIRECTORY_SEPARATOR . 'temp');
@@ -97,30 +81,20 @@ class ResponseInterpolation extends BaseInterpolation
         return $contentLength;
     }
 
-    /**
-     * Get response time
-     *
-     * @return string|null
-     */
     protected function getResponseTime(): ?string
     {
         try {
             return (string)Benchmark::duration(config('advanced-logger.request.benchmark', 'application'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
 
-    /**
-     * Get request hash
-     *
-     * @return string|null
-     */
     protected function getRequestHash(): ?string
     {
         try {
             return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }

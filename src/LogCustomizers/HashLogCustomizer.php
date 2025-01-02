@@ -5,9 +5,6 @@ namespace Brackets\AdvancedLogger\LogCustomizers;
 use Brackets\AdvancedLogger\Formatters\LineWithHashFormatter;
 use Illuminate\Log\Logger;
 
-/**
- * Class HashLogCustomizer
- */
 class HashLogCustomizer
 {
     /**

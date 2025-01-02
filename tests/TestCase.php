@@ -10,11 +10,6 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    /**
-     * Setup the test environment.
-     *
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -22,8 +17,6 @@ abstract class TestCase extends Orchestra
 
     /**
      * Clean up the testing environment before the next test.
-     *
-     * @return void
      */
     protected function tearDown(): void
     {
@@ -53,18 +46,11 @@ abstract class TestCase extends Orchestra
         });
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     public function getFixturesDirectory(string $path): string
     {
         return __DIR__ . "/fixtures/{$path}";
     }
 
-    /**
-     * @return string
-     */
     public function getRequestLogFileName(): string
     {
         return $this->getFixturesDirectory('request-' . Carbon::now()->format('Y-m-d') . '.log');
@@ -73,7 +59,7 @@ abstract class TestCase extends Orchestra
     /**
      * @param Application $app
      *
-     * @return array
+     * @return array<class-string>
      */
     protected function getPackageProviders($app): array
     {

@@ -1,6 +1,8 @@
 /vendor
 composer.lock
+.idea/
 .DS_Store
 .phpunit.result.cache
 .phpunit.cache
-.idea
+.phpcs.cache
+.phpstan.cache
