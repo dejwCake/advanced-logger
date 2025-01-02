@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Formatters;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
-use Exception;
 use Monolog\Formatter\LineFormatter;
 use Monolog\LogRecord;
 
@@ -14,13 +15,14 @@ class LineWithHashFormatter extends LineFormatter
     public function format(LogRecord $record): string
     {
         $output = parent::format($record);
-        if (false !== strpos($output, '%' . self::KEY . '%')) {
+        if (strpos($output, '%' . self::KEY . '%') !== false) {
             $output = str_replace(
                 '%' . self::KEY . '%',
                 $this->stringify($this->getRequestHash()),
-                $output
+                $output,
             );
         }
+
         return $output;
     }
 
@@ -28,7 +30,7 @@ class LineWithHashFormatter extends LineFormatter
     {
         try {
             return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
-        } catch (Exception) {
+        } catch (\Throwable) {
             return null;
         }
     }

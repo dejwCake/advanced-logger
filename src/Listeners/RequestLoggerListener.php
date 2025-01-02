@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Listeners;
 
 use Illuminate\Events\Dispatcher;
@@ -9,9 +11,6 @@ class RequestLoggerListener
 {
     public function subscribe(Dispatcher $events): void
     {
-        $events->listen(
-            RequestHandled::class,
-            RequestLoggerListenerHandler::class
-        );
+        $events->listen(RequestHandled::class, RequestLoggerListenerHandler::class);
     }
 }

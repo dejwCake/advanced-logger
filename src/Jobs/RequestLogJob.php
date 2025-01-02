@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Jobs;
 
 use Brackets\AdvancedLogger\Services\RequestLoggerService;
@@ -13,14 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RequestLogJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected Request $request;
-    protected Response $response;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
-    public function __construct(Request $request, Response $response)
+    public function __construct(protected Request $request, protected Response $response)
     {
-        $this->request = $request;
-        $this->response = $response;
     }
 
     public function handle(): void

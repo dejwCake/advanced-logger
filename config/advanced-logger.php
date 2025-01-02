@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Brackets\AdvancedLogger\Handlers\RequestLoggerHandler;
 
 return [
@@ -17,7 +19,7 @@ return [
          */
 
         'handlers' => [
-            RequestLoggerHandler::class
+            RequestLoggerHandler::class,
         ],
 
         /*
@@ -56,7 +58,7 @@ return [
         /*
          * Queue used to process request logger
          */
-        
+
         'queue' => null,
 
         /*

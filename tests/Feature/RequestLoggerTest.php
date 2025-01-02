@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Test\Feature;
 
 use Brackets\AdvancedLogger\Test\TestCase;
 
 class RequestLoggerTest extends TestCase
 {
-
     public function testRequestIsLoggedInFile(): void
     {
         $response = $this->get('/');

@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Services;
 
-use Exception;
 use RuntimeException;
 
 class Benchmark
 {
-    /**
-     * @var array<string, array<string, string|float>>
-     */
+    /** @var array<string, array<string, string|float>> */
     protected static array $timers = [];
 
     public static function start(string $name): string|float
@@ -19,6 +18,7 @@ class Benchmark
             'hash' => self::generateRandomHash(),
             'start' => $start,
         ];
+
         return $start;
     }
 
@@ -32,8 +32,10 @@ class Benchmark
             $start = static::$timers[$name]['start'];
             static::$timers[$name]['end'] = $end;
             static::$timers[$name]['duration'] = $end - $start;
+
             return static::$timers[$name]['duration'];
         }
+
         throw new RuntimeException("Benchmark '{$name}' not started");
     }
 
@@ -47,6 +49,7 @@ class Benchmark
         if (isset(static::$timers[$name]) && isset(static::$timers[$name]['start'])) {
             return static::$timers[$name]['hash'];
         }
+
         throw new RuntimeException("Benchmark '{$name}' not started");
     }
 
@@ -54,7 +57,7 @@ class Benchmark
     {
         try {
             return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(32))), 0, 10);
-        } catch (Exception) {
+        } catch (\Throwable) {
             return substr(sha1((string) time()), 0, 10);
         }
     }

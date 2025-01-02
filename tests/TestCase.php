@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Test;
 
 use Brackets\AdvancedLogger\AdvancedLoggerServiceProvider;
@@ -23,11 +25,14 @@ abstract class TestCase extends Orchestra
         if (file_exists($this->getRequestLogFileName())) {
             unlink($this->getRequestLogFileName());
         }
+
         parent::tearDown();
     }
 
     /**
      * @param Application $app
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -37,13 +42,9 @@ abstract class TestCase extends Orchestra
         $app['config']->set('advanced-logger.request.file', $this->getFixturesDirectory('request.log'));
         $app['config']->set('advanced-logger.request.excluded-paths', ['excluded']);
 
-        Route::get('/', function () {
-            return 'Hi there.';
-        });
+        Route::get('/', static fn () => 'Hi there.');
 
-        Route::get('/excluded', function () {
-            return 'This is excluded path.';
-        });
+        Route::get('/excluded', static fn () => 'This is excluded path.');
     }
 
     public function getFixturesDirectory(string $path): string
@@ -58,8 +59,9 @@ abstract class TestCase extends Orchestra
 
     /**
      * @param Application $app
-     *
      * @return array<class-string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     protected function getPackageProviders($app): array
     {

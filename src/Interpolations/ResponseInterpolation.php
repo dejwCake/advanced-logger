@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Interpolations;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
-use Exception;
 use Illuminate\Support\Str;
+use Throwable;
 
 class ResponseInterpolation extends BaseInterpolation
 {
@@ -19,6 +21,7 @@ class ResponseInterpolation extends BaseInterpolation
                 $text = str_replace($matches[0], $value, $text);
             }
         }
+
         return $text;
     }
 
@@ -51,6 +54,7 @@ class ResponseInterpolation extends BaseInterpolation
         $matches = [];
         preg_match("/([-\w]{2,})(?:\[([^\]]+)\])?/", $variable, $matches);
         if (count($matches) === 3) {
+            //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             [$line, $var, $option] = $matches;
             switch (strtolower($var)) {
                 case 'res':
@@ -59,6 +63,7 @@ class ResponseInterpolation extends BaseInterpolation
                     return $raw;
             }
         }
+
         return $raw;
     }
 
@@ -72,20 +77,17 @@ class ResponseInterpolation extends BaseInterpolation
         $file = $path . DIRECTORY_SEPARATOR . 'response-' . time();
         file_put_contents($file, $content);
         $fileSize = filesize($file);
-        if (is_numeric($fileSize)) {
-            $contentLength = $this->formatSizeUnits($fileSize);
-        } else {
-            $contentLength = $this->formatSizeUnits(0);
-        }
+        $contentLength = is_numeric($fileSize) ? $this->formatSizeUnits($fileSize) : $this->formatSizeUnits(0);
         unlink($file);
+
         return $contentLength;
     }
 
     protected function getResponseTime(): ?string
     {
         try {
-            return (string)Benchmark::duration(config('advanced-logger.request.benchmark', 'application'));
-        } catch (Exception $e) {
+            return (string) Benchmark::duration(config('advanced-logger.request.benchmark', 'application'));
+        } catch (Throwable) {
             return null;
         }
     }
@@ -94,7 +96,7 @@ class ResponseInterpolation extends BaseInterpolation
     {
         try {
             return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
-        } catch (Exception) {
+        } catch (Throwable) {
             return null;
         }
     }

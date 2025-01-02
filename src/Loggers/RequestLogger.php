@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Loggers;
 
 use Monolog\Logger;
@@ -13,12 +15,11 @@ class RequestLogger implements LoggerInterface
 
     public function __construct()
     {
-        if (version_compare(app()->version(), '5.5.99', '<=')) {
-            $this->monolog = clone app('log')->getMonolog();
-        } else {
-            $this->monolog = app('log')->driver()->getLogger();
-        }
-        if (config('advanced-logger.request.enabled') && $handlers = config('advanced-logger.request.handlers')) {
+        $this->monolog = version_compare(app()->version(), '5.5.99', '<=')
+            ? clone app('log')->getMonolog()
+            : app('log')->driver()->getLogger();
+        $handlers = config('advanced-logger.request.handlers');
+        if (config('advanced-logger.request.enabled') && $handlers) {
             if (count($handlers)) {
                 $this->monolog->popHandler();
                 foreach ($handlers as $handler) {
@@ -88,7 +89,6 @@ class RequestLogger implements LoggerInterface
         $this->monolog->debug($message, $context);
     }
 
-
     /**
      * System is unusable.
      */
@@ -101,6 +101,7 @@ class RequestLogger implements LoggerInterface
      * Log a message to the logs.
      *
      * @param string $level
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function log($level, string|Stringable $message, array $context = []): void
     {
@@ -109,15 +110,21 @@ class RequestLogger implements LoggerInterface
 
     /**
      * Register a file log handler.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function useFiles(string $path, string $level = 'debug'): void
     {
+        //do nothing
     }
 
     /**
      * Register a daily file log handler.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function useDailyFiles(string $path, int $days = 0, string $level = 'debug'): void
     {
+        //do nothing
     }
 }

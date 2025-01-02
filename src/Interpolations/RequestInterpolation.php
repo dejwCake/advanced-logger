@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Interpolations;
 
 use Carbon\Carbon;
@@ -18,6 +20,7 @@ class RequestInterpolation extends BaseInterpolation
                 $text = str_replace($matches[0], $value, $text);
             }
         }
+
         return $text;
     }
 
@@ -60,7 +63,7 @@ class RequestInterpolation extends BaseInterpolation
             'HTTP_ACCEPT_LANGUAGE',
             'HTTP_HOST',
             'HTTP_REFERER',
-            'HTTP_USER_AGENT'
+            'HTTP_USER_AGENT',
         ], strtoupper(str_replace('-', '_', $variable)));
 
         if (method_exists($this, $method)) {
@@ -81,18 +84,21 @@ class RequestInterpolation extends BaseInterpolation
             switch ($matches[0]) {
                 case 'date':
                     $matches[] = 'clf';
+
                     break;
             }
         }
         if (is_array($matches) && count($matches) === 3) {
+            //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
             [$line, $var, $option] = $matches;
             switch (strtolower($var)) {
                 case 'date':
                     $formats = [
                         'clf' => Carbon::now()->format('d/M/Y:H:i:s O'),
                         'iso' => Carbon::now()->toIso8601String(),
-                        'web' => Carbon::now()->toRfc1123String()
+                        'web' => Carbon::now()->toRfc1123String(),
                     ];
+
                     return $formats[$option] ?? Carbon::now()->format($option);
                 case 'req':
                 case 'header':
@@ -103,6 +109,7 @@ class RequestInterpolation extends BaseInterpolation
                     return $raw;
             }
         }
+
         return $raw;
     }
 
@@ -118,16 +125,16 @@ class RequestInterpolation extends BaseInterpolation
             }
         }
         $queryString = trim($queryString, ',');
-        $queryString .= ']';
-        return $queryString;
+
+        return $queryString . ']';
     }
 
     protected function getUser(): ?string
     {
-        if (!is_null($this->request->user()) && !is_null($this->request->user()->email)) {
-            return $this->request->user()->email;
-        } else {
-            return null;
-        }
+        return !is_null($this->request->user()) && !is_null(
+            $this->request->user()->email,
+        )
+            ? $this->request->user()->email
+            : null;
     }
 }

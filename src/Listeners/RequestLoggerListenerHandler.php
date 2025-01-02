@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Listeners;
 
 use Brackets\AdvancedLogger\Jobs\RequestLogJob;
@@ -37,7 +39,7 @@ class RequestLoggerListenerHandler
     protected function excluded(Request $request): bool
     {
         $excludedPaths = config('advanced-logger.request.excluded-paths');
-        if (null === $excludedPaths || empty($excludedPaths)) {
+        if ($excludedPaths === null || $excludedPaths === []) {
             return false;
         }
         foreach ($excludedPaths as $excludedPath) {
@@ -45,6 +47,7 @@ class RequestLoggerListenerHandler
                 return true;
             }
         }
+
         return false;
     }
 }

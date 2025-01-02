@@ -17,7 +17,7 @@
 
     <rule ref="SlevomatCodingStandard.Complexity.Cognitive">
         <properties>
-            <property name="maxComplexity" value="10"/>
+            <property name="maxComplexity" value="15"/>
         </properties>
     </rule>
 
@@ -25,8 +25,16 @@
         <properties>
             <property name="rootNamespaces" type="array">
                 <element key="src" value="Brackets\AdvancedLogger"/>
-                <element key="tests" value="Brackets\AdvancedLogger\Tests"/>
+                <element key="tests" value="Brackets\AdvancedLogger\Test"/>
             </property>
         </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Files.LineLength.LineTooLong">
+        <exclude-pattern>config/advanced-logger.php</exclude-pattern>
+        <exclude-pattern>src/Services/RequestLoggerService.php</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable">
+        <exclude-pattern>src/Interpolations/RequestInterpolation.php</exclude-pattern>
     </rule>
 </ruleset>

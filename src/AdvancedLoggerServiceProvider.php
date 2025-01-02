@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger;
 
 use Brackets\AdvancedLogger\Providers\EventServiceProvider;

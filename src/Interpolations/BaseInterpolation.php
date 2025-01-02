@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Interpolations;
 
 use Brackets\AdvancedLogger\Contracts\InterpolationContract;
@@ -34,6 +36,7 @@ abstract class BaseInterpolation implements InterpolationContract
         if (is_null($value)) {
             $value = 'null';
         }
+
         return $value;
     }
 

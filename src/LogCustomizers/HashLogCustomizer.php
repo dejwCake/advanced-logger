@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\LogCustomizers;
 
 use Brackets\AdvancedLogger\Formatters\LineWithHashFormatter;
@@ -15,7 +17,7 @@ class HashLogCustomizer
         foreach ($logger->getHandlers() as $handler) {
             $handler->setFormatter(app(
                 LineWithHashFormatter::class,
-                ['format' => "[%datetime%] %hash% %channel%.%level_name%: %message% %context% %extra%\n"]
+                ['format' => "[%datetime%] %hash% %channel%.%level_name%: %message% %context% %extra%\n"],
             ));
         }
     }

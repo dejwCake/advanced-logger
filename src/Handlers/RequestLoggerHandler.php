@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brackets\AdvancedLogger\Handlers;
 
 use Monolog\Handler\RotatingFileHandler;
@@ -15,10 +17,13 @@ class RequestLoggerHandler extends RotatingFileHandler
         ?int $filePermission = null,
         bool $useLocking = false,
     ) {
-        $filename = !is_null($filename) ? $filename : config(
-            'advanced-logger.request.file',
-            storage_path('logs/request.log')
-        );
+        $filename = !is_null($filename)
+            ? $filename
+            : config(
+                'advanced-logger.request.file',
+                storage_path('logs/request.log'),
+            );
+
         parent::__construct($filename, $maxFiles, $level, $bubble, $filePermission, $useLocking);
     }
 }
