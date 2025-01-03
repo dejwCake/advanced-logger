@@ -12,15 +12,15 @@ class RequestLoggerTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $this->assertStringContainsString('127.0.0.1', file_get_contents($this->getRequestLogFileName()));
-        $this->assertStringContainsString(' GET http://localhost', file_get_contents($this->getRequestLogFileName()));
+        self::assertStringContainsString('127.0.0.1', file_get_contents($this->getRequestLogFileName()));
+        self::assertStringContainsString(' GET http://localhost', file_get_contents($this->getRequestLogFileName()));
     }
 
     public function testExcludedPathIsNotLogged(): void
     {
         $response = $this->get('/excluded');
         $response->assertStatus(200);
-        $this->assertFileDoesNotExist($this->getRequestLogFileName());
+        self::assertFileDoesNotExist($this->getRequestLogFileName());
         //We are deleting request file, so there should not be a files
     }
 }
