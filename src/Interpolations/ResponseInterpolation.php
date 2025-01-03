@@ -6,6 +6,7 @@ namespace Brackets\AdvancedLogger\Interpolations;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Throwable;
 
 class ResponseInterpolation extends BaseInterpolation
@@ -75,7 +76,7 @@ class ResponseInterpolation extends BaseInterpolation
     {
         $path = storage_path('framework' . DIRECTORY_SEPARATOR . 'temp');
         if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         $content = $this->response->getContent();
         $file = $path . DIRECTORY_SEPARATOR . 'response-' . time();
