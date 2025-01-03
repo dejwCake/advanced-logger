@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Brackets\AdvancedLogger\Test\Feature;
+namespace Brackets\AdvancedLogger\Tests\Feature;
 
-use Brackets\AdvancedLogger\Test\TestCase;
+use Brackets\AdvancedLogger\Tests\TestCase;
 
 class RequestLoggerTest extends TestCase
 {

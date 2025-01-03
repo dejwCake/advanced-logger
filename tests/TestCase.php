@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Brackets\AdvancedLogger\Test;
+namespace Brackets\AdvancedLogger\Tests;
 
 use Brackets\AdvancedLogger\AdvancedLoggerServiceProvider;
 use Carbon\Carbon;

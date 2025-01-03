@@ -36,7 +36,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Brackets\\AdvancedLogger\\Test\\": "tests/"
+            "Brackets\\AdvancedLogger\\Tests\\": "tests/"
         }
     },
     "extra": {
