@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Brackets\AdvancedLogger\Interpolations;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
 class RequestInterpolation extends BaseInterpolation
@@ -98,12 +98,12 @@ class RequestInterpolation extends BaseInterpolation
             switch (strtolower($var)) {
                 case 'date':
                     $formats = [
-                        'clf' => Carbon::now()->format('d/M/Y:H:i:s O'),
-                        'iso' => Carbon::now()->toIso8601String(),
-                        'web' => Carbon::now()->toRfc1123String(),
+                        'clf' => CarbonImmutable::now()->format('d/M/Y:H:i:s O'),
+                        'iso' => CarbonImmutable::now()->toIso8601String(),
+                        'web' => CarbonImmutable::now()->toRfc1123String(),
                     ];
 
-                    return $formats[$option] ?? Carbon::now()->format($option);
+                    return $formats[$option] ?? CarbonImmutable::now()->format($option);
                 case 'req':
                 case 'header':
                     return $this->convertToString($this->request->header(strtolower($option)));

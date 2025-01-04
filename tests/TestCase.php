@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Brackets\AdvancedLogger\Tests;
 
 use Brackets\AdvancedLogger\AdvancedLoggerServiceProvider;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -54,7 +54,7 @@ abstract class TestCase extends Orchestra
 
     public function getRequestLogFileName(): string
     {
-        return $this->getFixturesDirectory('request-' . Carbon::now()->format('Y-m-d') . '.log');
+        return $this->getFixturesDirectory('request-' . CarbonImmutable::now()->format('Y-m-d') . '.log');
     }
 
     /**
