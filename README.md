@@ -57,7 +57,7 @@ This log modifier can be used also in other channels, however it uses extended `
 To run tests use this docker environment.
 
 ```shell
-  docker compose run -it test vendor/bin/phpunit
+  docker compose run -it --rm test vendor/bin/phpunit
 ```
 
 To switch between postgresql and mariadb change in `docker-compose.yml` DB_CONNECTION environmental variable:
