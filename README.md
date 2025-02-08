@@ -52,6 +52,14 @@ to `daily` channel. The resulted code should looks like
 
 This log modifier can be used also in other channels, however it uses extended `LineFormatter`.
 
+## Composer
+
+To develop this package, you need to have composer installed. To run composer command use:
+
+```shell
+  docker compose run -it --rm test composer update
+```
+
 ## Run tests
 
 To run tests use this docker environment.
