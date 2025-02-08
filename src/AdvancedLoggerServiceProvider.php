@@ -13,9 +13,6 @@ class AdvancedLoggerServiceProvider extends ServiceProvider
 {
     use DispatchesJobs;
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->publishes([
@@ -24,9 +21,6 @@ class AdvancedLoggerServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
     }
 
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/advanced-logger.php', 'advanced-logger');
