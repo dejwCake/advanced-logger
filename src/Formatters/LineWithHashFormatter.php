@@ -7,6 +7,7 @@ namespace Brackets\AdvancedLogger\Formatters;
 use Brackets\AdvancedLogger\Services\Benchmark;
 use Monolog\Formatter\LineFormatter;
 use Monolog\LogRecord;
+use Throwable;
 
 class LineWithHashFormatter extends LineFormatter
 {
@@ -30,7 +31,7 @@ class LineWithHashFormatter extends LineFormatter
     {
         try {
             return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return null;
         }
     }

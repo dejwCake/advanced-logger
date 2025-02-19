@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Brackets\AdvancedLogger\Services;
 
 use RuntimeException;
+use Throwable;
 
 class Benchmark
 {
@@ -57,7 +58,7 @@ class Benchmark
     {
         try {
             return substr(str_replace(['+', '/', '='], '', base64_encode(random_bytes(32))), 0, 10);
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return substr(sha1((string) time()), 0, 10);
         }
     }
