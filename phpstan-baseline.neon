@@ -13,7 +13,7 @@ parameters:
 			path: src/Interpolations/RequestInterpolation.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\{0\?\: string, 1\?\: non\-falsy\-string, 2\?\: non\-empty\-string, 3\?\: ''clf''\} will always evaluate to true\.$#'
+			message: '#^Call to function is_array\(\) with list\{0\?\: string, 1\?\: non\-falsy\-string, 2\?\: non\-empty\-string\} will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Interpolations/RequestInterpolation.php
