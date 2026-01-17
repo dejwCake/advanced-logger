@@ -1,8 +1,8 @@
 # Advanced Logger
 
-Advanced logger is a laravel package used to automatically log every request made to you laravel application. Each request is also identified by hash, which can be used in standard log to identify the request.
+Advanced Logger is a Laravel package that automatically logs every HTTP request made to your Laravel application. Each request is assigned a unique hash, which can also be included in your standard logs to easily match log entries to a specific request.
 
-This package has been inspired by package https://github.com/andersao/laravel-request-logger from Anderson Andrade. 
+This package is inspired by https://github.com/andersao/laravel-request-logger by Anderson Andrade.
 
 ## Installation
 
@@ -12,7 +12,7 @@ Run `composer require dejwcake/advanced-logger` in your terminal.
 
 ### Laravel
 
-This package is for Laravel 10 or 11.
+This package is for Laravel 10, 11 or 12.
 
 To publish config file, run
 
@@ -26,7 +26,7 @@ All options are described in `config/advanced-logger.php`.
 
 ## Using request hash in standard log file
 
-If you would like to have request identifier in you standard log, to match log events with request you could add to `config/logging.php`
+If you would like to include the request identifier in your standard log so you can match log events to a specific request, add the following to `config/logging.php`:
 
 ```php
 'tap' => [Brackets\AdvancedLogger\LogCustomizers\HashLogCustomizer::class],
@@ -50,25 +50,27 @@ to `daily` channel. The resulted code should looks like
     ],
 ```
 
-This log modifier can be used also in other channels, however it uses extended `LineFormatter`.
+This log modifier can also be applied to other logging channels. However, it relies on an extended `LineFormatter`, so make sure the target channel is compatible with that formatter.
 
-## Composer
+## How to develop this project
 
-To develop this package, you need to have composer installed. To run composer command use:
+### Composer
+
+Update dependencies:
 ```shell
-  docker compose run -it --rm test composer update
+docker compose run -it --rm test composer update
 ```
 
-For composer normalization:
+Composer normalization:
 ```shell
-  docker compose run -it --rm php-qa composer normalize
+docker compose run -it --rm php-qa composer normalize
 ```
 
-## Run tests
+### Run tests
 
-To run tests use this docker environment.
+Run tests with pcov:
 ```shell
-  docker compose run -it --rm test vendor/bin/phpunit -d pcov.enabled=1
+docker compose run -it --rm test ./vendor/bin/phpunit -d pcov.enabled=1
 ```
 
 To switch between postgresql and mariadb change in `docker-compose.yml` DB_CONNECTION environmental variable:
@@ -77,31 +79,29 @@ To switch between postgresql and mariadb change in `docker-compose.yml` DB_CONNE
 + DB_CONNECTION: mysql
 ```
 
-## Run code analysis tools
+### Run code analysis tools (php-qa)
 
-To be sure, that your code is clean, you can run code analysis tools. To do this, run:
-
-For php compatibility:
+PHP compatibility:
 ```shell
-  docker compose run -it --rm php-qa phpcs --standard=.phpcs.compatibility.xml --cache=.phpcs.cache
+docker compose run -it --rm php-qa phpcs --standard=.phpcs.compatibility.xml --cache=.phpcs.cache
 ```
 
-For code style:
+Code style:
 ```shell
-  docker compose run -it --rm php-qa phpcs -s --colors --extensions=php
+docker compose run -it --rm php-qa phpcs -s --colors --extensions=php
 ```
 
-or to fix issues:
+Fix style issues:
 ```shell
-  docker compose run -it --rm php-qa phpcbf -s --colors --extensions=php
+docker compose run -it --rm php-qa phpcbf -s --colors --extensions=php
 ```
 
-For static analysis:
+Static analysis (phpstan):
 ```shell
-  docker compose run -it --rm php-qa phpstan analyse --configuration=phpstan.neon
+docker compose run -it --rm php-qa phpstan analyse --configuration=phpstan.neon
 ```
 
-For mess detector:
+Mess detector (phpmd):
 ```shell
-  docker compose run -it --rm php-qa phpmd ./src,./config,./tests ansi phpmd.xml --suffixes php --baseline-file phpmd.baseline.xml
+docker compose run -it --rm php-qa phpmd ./src,./config,./tests ansi phpmd.xml --suffixes php --baseline-file phpmd.baseline.xml
 ```
