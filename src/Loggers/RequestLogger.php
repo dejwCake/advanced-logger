@@ -26,7 +26,7 @@ class RequestLogger implements LoggerInterface
                     if (class_exists($handler)) {
                         $this->monolog->pushHandler(app($handler));
                     } else {
-                        throw new RuntimeException("Handler class [{$handler}] does not exist");
+                        throw new RuntimeException(sprintf('Handler class [%s] does not exist', $handler));
                     }
                 }
             }

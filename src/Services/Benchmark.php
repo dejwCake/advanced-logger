@@ -37,7 +37,7 @@ class Benchmark
             return static::$timers[$name]['duration'];
         }
 
-        throw new RuntimeException("Benchmark '{$name}' not started");
+        throw new RuntimeException(sprintf('Benchmark \'%s\' not started', $name));
     }
 
     public static function duration(string $name): float
@@ -51,7 +51,7 @@ class Benchmark
             return static::$timers[$name]['hash'];
         }
 
-        throw new RuntimeException("Benchmark '{$name}' not started");
+        throw new RuntimeException(sprintf('Benchmark \'%s\' not started', $name));
     }
 
     public static function generateRandomHash(): string

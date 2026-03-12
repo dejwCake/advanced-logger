@@ -49,7 +49,7 @@ abstract class TestCase extends Orchestra
 
     public function getFixturesDirectory(string $path): string
     {
-        return __DIR__ . "/fixtures/{$path}";
+        return sprintf('%s/fixtures/%s', __DIR__, $path);
     }
 
     public function getRequestLogFileName(): string
