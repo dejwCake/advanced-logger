@@ -12,7 +12,7 @@ use Throwable;
 
 final class LineWithHashFormatter extends LineFormatter
 {
-    public const KEY = 'hash';
+    public const string KEY = 'hash';
 
     public function __construct(
         private readonly Repository $config,

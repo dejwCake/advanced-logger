@@ -21,7 +21,7 @@ final class RequestLoggerHandler extends RotatingFileHandler
         ?int $filePermission = null,
         bool $useLocking = false,
     ) {
-        $filename = $filename ?? $config->get(
+        $filename ??= $config->get(
             'advanced-logger.request.file',
             $app->storagePath('logs/request.log'),
         );

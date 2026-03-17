@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RequestLoggerService
 {
-    private const LOG_CONTEXT = 'RESPONSE';
+    private const string LOG_CONTEXT = 'RESPONSE';
 
     /** @var array<string, string> */
     private array $formats = [

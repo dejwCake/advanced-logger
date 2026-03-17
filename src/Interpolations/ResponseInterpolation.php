@@ -13,10 +13,8 @@ use Throwable;
 
 final class ResponseInterpolation extends BaseInterpolation
 {
-    public function __construct(
-        private readonly Repository $config,
-        private readonly Application $app,
-    ) {
+    public function __construct(private readonly Repository $config, private readonly Application $app,)
+    {
     }
 
     public function interpolate(string $text): string

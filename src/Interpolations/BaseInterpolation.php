@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseInterpolation implements InterpolationContract
 {
-    protected ?Request $request;
-    protected ?Response $response;
+    protected ?Request $request = null;
+    protected ?Response $response = null;
 
     public function setRequest(Request $request): void
     {

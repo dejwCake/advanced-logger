@@ -11,9 +11,8 @@ use Monolog\Handler\FormattableHandlerInterface;
 
 final class HashLogCustomizer
 {
-    public function __construct(
-        private readonly Container $container,
-    ) {
+    public function __construct(private readonly Container $container,)
+    {
     }
 
     /**

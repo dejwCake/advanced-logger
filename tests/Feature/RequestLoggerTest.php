@@ -6,7 +6,7 @@ namespace Brackets\AdvancedLogger\Tests\Feature;
 
 use Brackets\AdvancedLogger\Tests\TestCase;
 
-class RequestLoggerTest extends TestCase
+final class RequestLoggerTest extends TestCase
 {
     public function testRequestIsLoggedInFile(): void
     {

@@ -31,7 +31,10 @@ final class RequestLoggerListenerHandler
         Benchmark::end($this->config->get('advanced-logger.request.benchmark', 'application'));
 
         if (!$this->excluded($event->request)) {
-            $task = $this->container->make(RequestLogJob::class, ['request' => $event->request, 'response' => $event->response]);
+            $task = $this->container->make(
+                RequestLogJob::class,
+                ['request' => $event->request, 'response' => $event->response],
+            );
             $queueName = $this->config->get('advanced-logger.request.queue');
             if (is_null($queueName)) {
                 $task->handle($this->container->make(RequestLoggerService::class));

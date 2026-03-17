@@ -12,7 +12,7 @@ final class Benchmark
     /** @var array<string, array<string, string|float>> */
     private static array $timers = [];
 
-    public static function start(string $name): string|float
+    public static function start(string $name): float
     {
         $start = microtime(true);
         self::$timers[$name] = [
@@ -42,7 +42,7 @@ final class Benchmark
 
     public static function duration(string $name): float
     {
-        return static::end($name);
+        return self::end($name);
     }
 
     public static function hash(string $name): string
