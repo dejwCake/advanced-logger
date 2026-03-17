@@ -13,20 +13,19 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Component\HttpFoundation\Response;
 
-class RequestLogJob implements ShouldQueue
+final class RequestLogJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected Request $request, protected Response $response)
+    public function __construct(private readonly Request $request, private readonly Response $response)
     {
     }
 
-    public function handle(): void
+    public function handle(RequestLoggerService $requestLoggerService): void
     {
-        $requestLoggerService = app(RequestLoggerService::class);
         $requestLoggerService->log($this->request, $this->response);
     }
 }

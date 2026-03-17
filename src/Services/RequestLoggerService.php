@@ -7,16 +7,17 @@ namespace Brackets\AdvancedLogger\Services;
 use Brackets\AdvancedLogger\Interpolations\RequestInterpolation;
 use Brackets\AdvancedLogger\Interpolations\ResponseInterpolation;
 use Brackets\AdvancedLogger\Loggers\RequestLogger;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
-class RequestLoggerService
+final class RequestLoggerService
 {
-    protected const LOG_CONTEXT = 'RESPONSE';
+    private const LOG_CONTEXT = 'RESPONSE';
 
     /** @var array<string, string> */
-    protected array $formats = [
+    private array $formats = [
         'full' => '{request-hash} | HTTP/{http-version} {status} | {remote-addr} | {user} | {method} {url} {query} | {response-time} s | {user-agent} | {referer}',
         'combined' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length} "{referer}" "{user-agent}"',
         'common' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length}',
@@ -26,9 +27,10 @@ class RequestLoggerService
     ];
 
     public function __construct(
-        protected RequestLogger $logger,
-        protected RequestInterpolation $requestInterpolation,
-        protected ResponseInterpolation $responseInterpolation,
+        private readonly Repository $config,
+        private readonly RequestLogger $logger,
+        private readonly RequestInterpolation $requestInterpolation,
+        private readonly ResponseInterpolation $responseInterpolation,
     ) {
     }
 
@@ -38,15 +40,15 @@ class RequestLoggerService
 
         $this->responseInterpolation->setResponse($response);
 
-        if (config('advanced-logger.request.enabled')) {
-            $format = config('advanced-logger.request.format', 'full');
+        if ($this->config->get('advanced-logger.request.enabled')) {
+            $format = $this->config->get('advanced-logger.request.format', 'full');
             $format = Arr::get($this->formats, $format, $format);
 
             $message = $this->responseInterpolation->interpolate($format);
             $message = $this->requestInterpolation->interpolate($message);
 
-            $this->logger->log(config('advanced-logger.request.level', 'info'), $message, [
-                static::LOG_CONTEXT,
+            $this->logger->log($this->config->get('advanced-logger.request.level', 'info'), $message, [
+                self::LOG_CONTEXT,
             ]);
         }
     }

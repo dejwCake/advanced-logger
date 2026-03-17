@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Brackets\AdvancedLogger;
 
-use Brackets\AdvancedLogger\Providers\EventServiceProvider;
+use Brackets\AdvancedLogger\Listeners\RequestLoggerListenerHandler;
 use Brackets\AdvancedLogger\Services\Benchmark;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Support\ServiceProvider;
 
 class AdvancedLoggerServiceProvider extends ServiceProvider
 {
-    use DispatchesJobs;
-
-    public function boot(): void
+    public function boot(Dispatcher $events): void
     {
-        $this->app->register(EventServiceProvider::class);
+        $events->listen(RequestHandled::class, RequestLoggerListenerHandler::class);
 
         if ($this->app->runningInConsole()) {
             $this->publish();
@@ -25,13 +25,15 @@ class AdvancedLoggerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/advanced-logger.php', 'advanced-logger');
-        Benchmark::start(config('advanced-logger.request.benchmark', 'application'));
+
+        $config = $this->app->make(Repository::class);
+        Benchmark::start($config->get('advanced-logger.request.benchmark', 'application'));
     }
 
     private function publish(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/advanced-logger.php' => config_path('advanced-logger.php'),
+            __DIR__ . '/../config/advanced-logger.php' => $this->app->configPath('advanced-logger.php'),
         ], 'config');
     }
 }

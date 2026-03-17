@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace Brackets\AdvancedLogger\Loggers;
 
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Log\LogManager;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Stringable;
 
-class RequestLogger implements LoggerInterface
+final class RequestLogger implements LoggerInterface
 {
-    protected Logger $monolog;
+    private readonly Logger $monolog;
 
-    public function __construct()
-    {
-        $this->monolog = version_compare(app()->version(), '5.5.99', '<=')
-            ? clone app('log')->getMonolog()
-            : app('log')->driver()->getLogger();
-        $handlers = config('advanced-logger.request.handlers');
-        if (config('advanced-logger.request.enabled') && $handlers) {
+    public function __construct(
+        private readonly Repository $config,
+        private readonly Container $container,
+        LogManager $logManager,
+    ) {
+        $this->monolog = $logManager->driver()->getLogger();
+        $handlers = $this->config->get('advanced-logger.request.handlers');
+        if ($this->config->get('advanced-logger.request.enabled') && $handlers) {
             if (count($handlers)) {
                 $this->monolog->popHandler();
                 foreach ($handlers as $handler) {
                     if (class_exists($handler)) {
-                        $this->monolog->pushHandler(app($handler));
+                        $this->monolog->pushHandler($this->container->make($handler));
                     } else {
                         throw new RuntimeException(sprintf('Handler class [%s] does not exist', $handler));
                     }
@@ -106,25 +110,5 @@ class RequestLogger implements LoggerInterface
     public function log($level, string|Stringable $message, array $context = []): void
     {
         $this->monolog->log($level, $message, $context);
-    }
-
-    /**
-     * Register a file log handler.
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-     */
-    public function useFiles(string $path, string $level = 'debug'): void
-    {
-        //do nothing
-    }
-
-    /**
-     * Register a daily file log handler.
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-     */
-    public function useDailyFiles(string $path, int $days = 0, string $level = 'debug'): void
-    {
-        //do nothing
     }
 }

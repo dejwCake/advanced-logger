@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace Brackets\AdvancedLogger\Interpolations;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
 
-class ResponseInterpolation extends BaseInterpolation
+final class ResponseInterpolation extends BaseInterpolation
 {
+    public function __construct(
+        private readonly Repository $config,
+        private readonly Application $app,
+    ) {
+    }
+
     public function interpolate(string $text): string
     {
         if ($this->response === null) {
@@ -30,7 +38,7 @@ class ResponseInterpolation extends BaseInterpolation
         return $text;
     }
 
-    protected function resolveVariable(string $raw, string $variable): string
+    private function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
             'content',
@@ -59,22 +67,20 @@ class ResponseInterpolation extends BaseInterpolation
         $matches = [];
         preg_match("/([-\w]{2,})(?:\[([^\]]+)\])?/", $variable, $matches);
         if (count($matches) === 3) {
-            //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
-            [$line, $var, $option] = $matches;
-            switch (strtolower($var)) {
-                case 'res':
-                    return $this->convertToString($this->response->headers->get($option));
-                default:
-                    return $raw;
-            }
+            [, $var, $option] = $matches;
+
+            return match (strtolower($var)) {
+                'res' => $this->convertToString($this->response->headers->get($option)),
+                default => $raw,
+            };
         }
 
         return $raw;
     }
 
-    protected function getContentLength(): string
+    private function getContentLength(): string
     {
-        $path = storage_path('framework' . DIRECTORY_SEPARATOR . 'temp');
+        $path = $this->app->storagePath('framework' . DIRECTORY_SEPARATOR . 'temp');
         if (!file_exists($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
@@ -88,19 +94,19 @@ class ResponseInterpolation extends BaseInterpolation
         return $contentLength;
     }
 
-    protected function getResponseTime(): ?string
+    private function getResponseTime(): ?string
     {
         try {
-            return (string) Benchmark::duration(config('advanced-logger.request.benchmark', 'application'));
+            return (string) Benchmark::duration($this->config->get('advanced-logger.request.benchmark', 'application'));
         } catch (Throwable) {
             return null;
         }
     }
 
-    protected function getRequestHash(): ?string
+    private function getRequestHash(): ?string
     {
         try {
-            return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
+            return Benchmark::hash($this->config->get('advanced-logger.request.benchmark', 'application'));
         } catch (Throwable) {
             return null;
         }

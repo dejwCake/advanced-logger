@@ -7,7 +7,7 @@ namespace Brackets\AdvancedLogger\Interpolations;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
-class RequestInterpolation extends BaseInterpolation
+final class RequestInterpolation extends BaseInterpolation
 {
     public function interpolate(string $text): string
     {
@@ -28,7 +28,7 @@ class RequestInterpolation extends BaseInterpolation
         return $text;
     }
 
-    protected function resolveVariable(string $raw, string $variable): string
+    private function resolveVariable(string $raw, string $variable): string
     {
         $method = str_replace([
             'remoteAddr',
@@ -85,39 +85,30 @@ class RequestInterpolation extends BaseInterpolation
         $matches = [];
         preg_match("/([-\w]{2,})(?:\[([^\]]+)\])?/", $variable, $matches);
         if (count($matches) === 2) {
-            switch ($matches[0]) {
-                case 'date':
-                    $matches[] = 'clf';
-
-                    break;
+            if ($matches[0] === 'date') {
+                $matches[] = 'clf';
             }
         }
         if (is_array($matches) && count($matches) === 3) {
-            //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
-            [$line, $var, $option] = $matches;
-            switch (strtolower($var)) {
-                case 'date':
-                    $formats = [
-                        'clf' => CarbonImmutable::now()->format('d/M/Y:H:i:s O'),
-                        'iso' => CarbonImmutable::now()->toIso8601String(),
-                        'web' => CarbonImmutable::now()->toRfc1123String(),
-                    ];
+            [, $var, $option] = $matches;
+            $formats = [
+                'clf' => CarbonImmutable::now()->format('d/M/Y:H:i:s O'),
+                'iso' => CarbonImmutable::now()->toIso8601String(),
+                'web' => CarbonImmutable::now()->toRfc1123String(),
+            ];
 
-                    return $formats[$option] ?? CarbonImmutable::now()->format($option);
-                case 'req':
-                case 'header':
-                    return $this->convertToString($this->request->header(strtolower($option)));
-                case 'server':
-                    return $this->convertToString($this->request->server($option));
-                default:
-                    return $raw;
-            }
+            return match (strtolower($var)) {
+                'date' => $formats[$option] ?? CarbonImmutable::now()->format($option),
+                'req', 'header' => $this->convertToString($this->request->header(strtolower($option))),
+                'server' => $this->convertToString($this->request->server($option)),
+                default => $raw,
+            };
         }
 
         return $raw;
     }
 
-    protected function getQuery(): string
+    private function getQuery(): string
     {
         $query = $this->request->query();
         $queryString = '[';
@@ -133,7 +124,7 @@ class RequestInterpolation extends BaseInterpolation
         return $queryString . ']';
     }
 
-    protected function getUser(): ?string
+    private function getUser(): ?string
     {
         return $this->request?->user()?->email;
     }

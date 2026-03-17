@@ -5,18 +5,29 @@ declare(strict_types=1);
 namespace Brackets\AdvancedLogger\Formatters;
 
 use Brackets\AdvancedLogger\Services\Benchmark;
+use Illuminate\Contracts\Config\Repository;
 use Monolog\Formatter\LineFormatter;
 use Monolog\LogRecord;
 use Throwable;
 
-class LineWithHashFormatter extends LineFormatter
+final class LineWithHashFormatter extends LineFormatter
 {
     public const KEY = 'hash';
+
+    public function __construct(
+        private readonly Repository $config,
+        ?string $format = null,
+        ?string $dateFormat = null,
+        bool $allowInlineLineBreaks = false,
+        bool $ignoreEmptyContextAndExtra = false,
+    ) {
+        parent::__construct($format, $dateFormat, $allowInlineLineBreaks, $ignoreEmptyContextAndExtra);
+    }
 
     public function format(LogRecord $record): string
     {
         $output = parent::format($record);
-        if (strpos($output, '%' . self::KEY . '%') !== false) {
+        if (str_contains($output, '%' . self::KEY . '%')) {
             $output = str_replace(
                 '%' . self::KEY . '%',
                 $this->stringify($this->getRequestHash()),
@@ -27,10 +38,10 @@ class LineWithHashFormatter extends LineFormatter
         return $output;
     }
 
-    protected function getRequestHash(): ?string
+    private function getRequestHash(): ?string
     {
         try {
-            return Benchmark::hash(config('advanced-logger.request.benchmark', 'application'));
+            return Benchmark::hash($this->config->get('advanced-logger.request.benchmark', 'application'));
         } catch (Throwable) {
             return null;
         }

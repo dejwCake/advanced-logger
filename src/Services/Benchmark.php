@@ -7,15 +7,15 @@ namespace Brackets\AdvancedLogger\Services;
 use RuntimeException;
 use Throwable;
 
-class Benchmark
+final class Benchmark
 {
     /** @var array<string, array<string, string|float>> */
-    protected static array $timers = [];
+    private static array $timers = [];
 
     public static function start(string $name): string|float
     {
         $start = microtime(true);
-        static::$timers[$name] = [
+        self::$timers[$name] = [
             'hash' => self::generateRandomHash(),
             'start' => $start,
         ];
@@ -26,15 +26,15 @@ class Benchmark
     public static function end(string $name): float
     {
         $end = microtime(true);
-        if (isset(static::$timers[$name]) && isset(static::$timers[$name]['start'])) {
-            if (isset(static::$timers[$name]['duration'])) {
-                return static::$timers[$name]['duration'];
+        if (isset(self::$timers[$name]) && isset(self::$timers[$name]['start'])) {
+            if (isset(self::$timers[$name]['duration'])) {
+                return self::$timers[$name]['duration'];
             }
-            $start = static::$timers[$name]['start'];
-            static::$timers[$name]['end'] = $end;
-            static::$timers[$name]['duration'] = $end - $start;
+            $start = self::$timers[$name]['start'];
+            self::$timers[$name]['end'] = $end;
+            self::$timers[$name]['duration'] = $end - $start;
 
-            return static::$timers[$name]['duration'];
+            return self::$timers[$name]['duration'];
         }
 
         throw new RuntimeException(sprintf('Benchmark \'%s\' not started', $name));
@@ -47,8 +47,8 @@ class Benchmark
 
     public static function hash(string $name): string
     {
-        if (isset(static::$timers[$name]) && isset(static::$timers[$name]['start'])) {
-            return static::$timers[$name]['hash'];
+        if (isset(self::$timers[$name]) && isset(self::$timers[$name]['start'])) {
+            return self::$timers[$name]['hash'];
         }
 
         throw new RuntimeException(sprintf('Benchmark \'%s\' not started', $name));
