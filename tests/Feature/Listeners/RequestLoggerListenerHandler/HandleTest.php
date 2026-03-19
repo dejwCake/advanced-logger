@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Brackets\AdvancedLogger\Tests\Feature;
+namespace Brackets\AdvancedLogger\Tests\Feature\Listeners\RequestLoggerListenerHandler;
 
 use Brackets\AdvancedLogger\Tests\TestCase;
 
-final class RequestLoggerTest extends TestCase
+final class HandleTest extends TestCase
 {
     public function testRequestIsLoggedInFile(): void
     {
@@ -21,6 +21,19 @@ final class RequestLoggerTest extends TestCase
         $response = $this->get('/excluded');
         $response->assertStatus(200);
         self::assertFileDoesNotExist($this->getRequestLogFileName());
-        //We are deleting request file, so there should not be a files
+    }
+
+    public function testLogContainsResponseStatus(): void
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        self::assertStringContainsString('200', file_get_contents($this->getRequestLogFileName()));
+    }
+
+    public function testLogContainsRequestMethod(): void
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        self::assertStringContainsString('GET', file_get_contents($this->getRequestLogFileName()));
     }
 }
