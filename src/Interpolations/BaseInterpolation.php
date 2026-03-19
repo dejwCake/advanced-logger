@@ -43,19 +43,25 @@ abstract class BaseInterpolation implements InterpolationContract
     protected function formatSizeUnits(int $bytes): string
     {
         if ($bytes >= 1073741824) {
-            $bytes = number_format($bytes / 1073741824, 2) . 'GB';
-        } elseif ($bytes >= 1048576) {
-            $bytes = number_format($bytes / 1048576, 2) . 'MB';
-        } elseif ($bytes >= 1024) {
-            $bytes = number_format($bytes / 1024, 2) . 'KB';
-        } elseif ($bytes > 1) {
-            $bytes .= 'B';
-        } elseif ($bytes === 1) {
-            $bytes .= ' byte';
-        } else {
-            $bytes = '0B';
+            return number_format($bytes / 1073741824, 2) . 'GB';
         }
 
-        return $bytes;
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 2) . 'MB';
+        }
+
+        if ($bytes >= 1024) {
+            return number_format($bytes / 1024, 2) . 'KB';
+        }
+
+        if ($bytes > 1) {
+            return $bytes . 'B';
+        }
+
+        if ($bytes === 1) {
+            return $bytes . ' byte';
+        }
+
+        return '0B';
     }
 }

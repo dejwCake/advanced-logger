@@ -17,6 +17,8 @@ use Monolog\Handler\HandlerInterface;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
+use function assert;
+
 final class HashLogCustomizerTest extends TestCase
 {
     protected function tearDown(): void
@@ -26,14 +28,14 @@ final class HashLogCustomizerTest extends TestCase
 
     public function testSetsLineWithHashFormatterOnFormattableHandlers(): void
     {
-        /** @var Repository&MockInterface $config */
         $config = Mockery::mock(Repository::class);
+        assert($config instanceof Repository && $config instanceof MockInterface);
         $config->shouldReceive('get')->andReturn(null);
 
         $formatter = new LineWithHashFormatter($config);
 
-        /** @var Container&MockInterface $container */
         $container = Mockery::mock(Container::class);
+        assert($container instanceof Container && $container instanceof MockInterface);
         $container->shouldReceive('make')
             ->once()
             ->with(
@@ -42,8 +44,12 @@ final class HashLogCustomizerTest extends TestCase
             )
             ->andReturn($formatter);
 
-        /** @var (FormattableHandlerInterface&HandlerInterface&MockInterface) $handler */
         $handler = Mockery::mock(FormattableHandlerInterface::class . ',' . HandlerInterface::class);
+        assert(
+            $handler instanceof FormattableHandlerInterface
+            && $handler instanceof HandlerInterface
+            && $handler instanceof MockInterface,
+        );
         $handler->shouldReceive('setFormatter')->once()->with($formatter);
 
         $logger = new TestLogger([$handler]);
@@ -56,12 +62,12 @@ final class HashLogCustomizerTest extends TestCase
 
     public function testSkipsHandlersThatDoNotImplementFormattableHandlerInterface(): void
     {
-        /** @var Container&MockInterface $container */
         $container = Mockery::mock(Container::class);
+        assert($container instanceof Container && $container instanceof MockInterface);
         $container->shouldNotReceive('make');
 
-        /** @var HandlerInterface&MockInterface $handler */
         $handler = Mockery::mock(HandlerInterface::class);
+        assert($handler instanceof HandlerInterface && $handler instanceof MockInterface);
 
         $logger = new TestLogger([$handler]);
 
@@ -73,8 +79,8 @@ final class HashLogCustomizerTest extends TestCase
 
     public function testDoesNothingWhenLoggerHasNoGetHandlersMethod(): void
     {
-        /** @var Container&MockInterface $container */
         $container = Mockery::mock(Container::class);
+        assert($container instanceof Container && $container instanceof MockInterface);
         $container->shouldNotReceive('make');
 
         $loggerRef = new ReflectionClass(Logger::class);

@@ -12,14 +12,6 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    /**
-     * Clean up the testing environment before the next test.
-     */
     protected function tearDown(): void
     {
         if (file_exists($this->getRequestLogFileName())) {

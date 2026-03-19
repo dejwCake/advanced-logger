@@ -8,7 +8,6 @@ use Brackets\AdvancedLogger\Handlers\RequestLoggerHandler;
 use Brackets\AdvancedLogger\Loggers\RequestLogger;
 use Brackets\AdvancedLogger\Tests\TestCase;
 use Illuminate\Contracts\Config\Repository;
-use Monolog\Handler\TestHandler;
 use RuntimeException;
 
 final class RequestLoggerTest extends TestCase
@@ -23,7 +22,6 @@ final class RequestLoggerTest extends TestCase
     public function testInfoCallDelegatesToMonolog(): void
     {
         $config = $this->app->make(Repository::class);
-        $testHandler = new TestHandler();
         $config->set('advanced-logger.request.handlers', [RequestLoggerHandler::class]);
         $config->set('advanced-logger.request.enabled', true);
 

@@ -78,7 +78,7 @@ final class RequestInterpolation extends BaseInterpolation
             return $this->convertToString($this->request->$method());
         }
 
-        if (isset($_SERVER[$serverVariable])) {
+        if ($this->request->server($serverVariable) !== null) {
             return $this->convertToString($this->request->server($serverVariable));
         }
 

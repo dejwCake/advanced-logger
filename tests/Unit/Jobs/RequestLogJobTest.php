@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
 
+use function assert;
+
 final class RequestLogJobTest extends TestCase
 {
     protected function tearDown(): void
@@ -26,14 +28,14 @@ final class RequestLogJobTest extends TestCase
 
     public function testHandleCallsRequestLoggerServiceLogOnce(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
 
-        /** @var Repository&MockInterface $config */
         $config = Mockery::mock(Repository::class);
+        assert($config instanceof Repository && $config instanceof MockInterface);
         $config->shouldReceive('get')
             ->with('advanced-logger.request.enabled')
             ->once()

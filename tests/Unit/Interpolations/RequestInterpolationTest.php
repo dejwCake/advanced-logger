@@ -10,6 +10,8 @@ use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
+use function assert;
+
 final class RequestInterpolationTest extends TestCase
 {
     private RequestInterpolation $interpolation;
@@ -33,8 +35,8 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesMethodFromRequest(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('method')->once()->andReturn('GET');
 
         $this->interpolation->setRequest($request);
@@ -46,8 +48,8 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesPostMethodFromRequest(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('method')->once()->andReturn('POST');
 
         $this->interpolation->setRequest($request);
@@ -59,8 +61,8 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesUrlFromRequest(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('url')->once()->andReturn('https://example.com/test');
 
         $this->interpolation->setRequest($request);
@@ -72,8 +74,8 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesIpFromRemoteAddr(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('ip')->once()->andReturn('127.0.0.1');
 
         $this->interpolation->setRequest($request);
@@ -85,25 +87,22 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesUserAgentFromServerVars(): void
     {
-        $_SERVER['HTTP_USER_AGENT'] = 'TestBrowser/1.0';
-
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
-        $request->shouldReceive('server')->with('HTTP_USER_AGENT')->once()->andReturn('TestBrowser/1.0');
+        assert($request instanceof Request && $request instanceof MockInterface);
+        $request->shouldReceive('server')->with('HTTP_USER_AGENT')->andReturn('TestBrowser/1.0');
 
         $this->interpolation->setRequest($request);
 
         $result = $this->interpolation->interpolate('{user-agent}');
-
-        unset($_SERVER['HTTP_USER_AGENT']);
 
         self::assertSame('TestBrowser/1.0', $result);
     }
 
     public function testReturnsRawVariableWhenUnresolvable(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
+        $request->shouldReceive('server')->andReturn(null);
 
         $this->interpolation->setRequest($request);
 
@@ -114,8 +113,9 @@ final class RequestInterpolationTest extends TestCase
 
     public function testResolvesDateWithClfFormat(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
+        $request->shouldReceive('server')->andReturn(null);
 
         $this->interpolation->setRequest($request);
 

@@ -13,6 +13,8 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+use function assert;
+
 final class ResponseInterpolationTest extends TestCase
 {
     private ResponseInterpolation $interpolation;
@@ -44,8 +46,8 @@ final class ResponseInterpolationTest extends TestCase
 
     public function testResolvesStatusFromResponse(): void
     {
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $response->shouldReceive('getStatusCode')->once()->andReturn(200);
 
         $this->interpolation->setResponse($response);
@@ -57,8 +59,8 @@ final class ResponseInterpolationTest extends TestCase
 
     public function testResolvesHttpVersionFromResponse(): void
     {
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $response->shouldReceive('getProtocolVersion')->once()->andReturn('1.1');
 
         $this->interpolation->setResponse($response);
@@ -73,8 +75,8 @@ final class ResponseInterpolationTest extends TestCase
         $benchmarkName = 'test_response_time';
         Benchmark::start($benchmarkName);
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $this->interpolation->setResponse($response);
 
         $this->config->shouldReceive('get')
@@ -92,8 +94,8 @@ final class ResponseInterpolationTest extends TestCase
         $benchmarkName = 'test_request_hash';
         Benchmark::start($benchmarkName);
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $this->interpolation->setResponse($response);
 
         $this->config->shouldReceive('get')
@@ -107,8 +109,8 @@ final class ResponseInterpolationTest extends TestCase
 
     public function testReturnsRawVariableWhenUnresolvable(): void
     {
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $this->interpolation->setResponse($response);
 
         $result = $this->interpolation->interpolate('{unresolvable-var}');

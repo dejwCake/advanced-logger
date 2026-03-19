@@ -16,8 +16,7 @@ final class RequestLoggerService
 {
     private const string LOG_CONTEXT = 'RESPONSE';
 
-    /** @var array<string, string> */
-    private array $formats = [
+    private const array FORMATS = [
         'full' => '{request-hash} | HTTP/{http-version} {status} | {remote-addr} | {user} | {method} {url} {query} | {response-time} s | {user-agent} | {referer}',
         'combined' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length} "{referer}" "{user-agent}"',
         'common' => '{remote-addr} - {remote-user} [{date}] "{method} {url} HTTP/{http-version}" {status} {content-length}',
@@ -42,7 +41,7 @@ final class RequestLoggerService
 
         if ($this->config->get('advanced-logger.request.enabled')) {
             $format = $this->config->get('advanced-logger.request.format', 'full');
-            $format = Arr::get($this->formats, $format, $format);
+            $format = Arr::get(self::FORMATS, $format, $format);
 
             $message = $this->responseInterpolation->interpolate($format);
             $message = $this->requestInterpolation->interpolate($message);

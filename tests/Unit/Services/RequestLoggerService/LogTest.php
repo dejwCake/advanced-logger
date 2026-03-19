@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
 
+use function assert;
+
 final class LogTest extends TestCase
 {
     /** @var Repository&MockInterface */
@@ -31,8 +33,12 @@ final class LogTest extends TestCase
         $this->config = Mockery::mock(Repository::class);
 
         $this->logger = (new ReflectionClass(RequestLogger::class))->newInstanceWithoutConstructor();
-        $this->requestInterpolation = (new ReflectionClass(RequestInterpolation::class))->newInstanceWithoutConstructor();
-        $this->responseInterpolation = (new ReflectionClass(ResponseInterpolation::class))->newInstanceWithoutConstructor();
+        $this->requestInterpolation = (new ReflectionClass(
+            RequestInterpolation::class,
+        ))->newInstanceWithoutConstructor();
+        $this->responseInterpolation = (new ReflectionClass(
+            ResponseInterpolation::class,
+        ))->newInstanceWithoutConstructor();
 
         $serviceRef = new ReflectionClass(RequestLoggerService::class);
         $this->service = $serviceRef->newInstanceWithoutConstructor();
@@ -49,12 +55,14 @@ final class LogTest extends TestCase
 
     public function testWhenEnabledCallsSetRequestSetResponseInterpolatesAndCallsLogger(): void
     {
-        /** @var Request&MockInterface $request */
+        $this->expectNotToPerformAssertions();
+
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('method')->andReturn('GET');
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $response->shouldReceive('getStatusCode')->andReturn(200);
 
         $this->config->shouldReceive('get')
@@ -69,32 +77,23 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.level', 'info')
             ->andReturn('info');
 
-        $logCalls = [];
         $monolog = Mockery::mock(\Monolog\Logger::class);
         $monolog->shouldReceive('log')
             ->once()
-            ->withArgs(static function (string $level, string $message, array $context) use (&$logCalls): bool {
-                $logCalls[] = [$level, $message, $context];
-                return true;
-            });
+            ->with('info', 'GET 200', ['RESPONSE']);
 
         (new ReflectionClass($this->logger))->getProperty('monolog')->setValue($this->logger, $monolog);
 
         $this->service->log($request, $response);
-
-        self::assertCount(1, $logCalls);
-        self::assertSame('info', $logCalls[0][0]);
-        self::assertSame('GET 200', $logCalls[0][1]);
-        self::assertSame(['RESPONSE'], $logCalls[0][2]);
     }
 
     public function testWhenDisabledDoesNotCallLogger(): void
     {
-        /** @var Request&MockInterface $request */
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
 
         $this->config->shouldReceive('get')
             ->with('advanced-logger.request.enabled')
@@ -116,12 +115,14 @@ final class LogTest extends TestCase
 
     public function testUsesCustomFormatStringFromConfig(): void
     {
-        /** @var Request&MockInterface $request */
+        $this->expectNotToPerformAssertions();
+
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('method')->andReturn('DELETE');
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $response->shouldReceive('getStatusCode')->andReturn(404);
 
         $this->config->shouldReceive('get')
@@ -136,33 +137,27 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.level', 'info')
             ->andReturn('warning');
 
-        $logCalls = [];
         $monolog = Mockery::mock(\Monolog\Logger::class);
         $monolog->shouldReceive('log')
             ->once()
-            ->withArgs(static function (string $level, string $message, array $context) use (&$logCalls): bool {
-                $logCalls[] = [$level, $message, $context];
-                return true;
-            });
+            ->with('warning', 'DELETE 404', ['RESPONSE']);
 
         (new ReflectionClass($this->logger))->getProperty('monolog')->setValue($this->logger, $monolog);
 
         $this->service->log($request, $response);
-
-        self::assertCount(1, $logCalls);
-        self::assertSame('warning', $logCalls[0][0]);
-        self::assertSame('DELETE 404', $logCalls[0][1]);
     }
 
     public function testFallsBackToPredefinedFormatName(): void
     {
-        /** @var Request&MockInterface $request */
+        $this->expectNotToPerformAssertions();
+
         $request = Mockery::mock(Request::class);
+        assert($request instanceof Request && $request instanceof MockInterface);
         $request->shouldReceive('method')->andReturn('GET');
         $request->shouldReceive('url')->andReturn('http://localhost/test');
 
-        /** @var Response&MockInterface $response */
         $response = Mockery::mock(Response::class);
+        assert($response instanceof Response && $response instanceof MockInterface);
         $response->shouldReceive('getStatusCode')->andReturn(200);
         $response->shouldReceive('getContent')->andReturn('hello');
 
@@ -182,14 +177,12 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.benchmark', 'application')
             ->andReturn('benchmark_fallback_test');
 
-        $logCalls = [];
         $monolog = Mockery::mock(\Monolog\Logger::class);
         $monolog->shouldReceive('log')
             ->once()
-            ->withArgs(static function (string $level, string $message, array $context) use (&$logCalls): bool {
-                $logCalls[] = [$level, $message, $context];
-                return true;
-            });
+            ->withArgs(static fn (string $level, string $message): bool => $level === 'info'
+                && str_contains($message, 'GET')
+                && str_contains($message, '200'));
 
         (new ReflectionClass($this->logger))->getProperty('monolog')->setValue($this->logger, $monolog);
 
@@ -202,10 +195,5 @@ final class LogTest extends TestCase
         $responseInterpolationRef->getProperty('app')->setValue($this->responseInterpolation, $app);
 
         $this->service->log($request, $response);
-
-        self::assertCount(1, $logCalls);
-        self::assertSame('info', $logCalls[0][0]);
-        self::assertStringContainsString('GET', $logCalls[0][1]);
-        self::assertStringContainsString('200', $logCalls[0][1]);
     }
 }
