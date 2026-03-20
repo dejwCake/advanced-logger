@@ -5,7 +5,7 @@
 | Dependency | v1          | v2       |
 |------------|-------------|----------|
 | PHP        | ^8.2        | ^8.5     |
-| Laravel    | ^10.0–^12.0 | ^12.0    |
+| Laravel    | ^10.0–^12.0 | ^13.0    |
 | PHPUnit    | ^11.5       | ^13.0    |
 
 The `ext-json` requirement has been removed (bundled in PHP since 8.0).

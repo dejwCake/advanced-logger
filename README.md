@@ -12,7 +12,7 @@ Run `composer require dejwcake/advanced-logger` in your terminal.
 
 ### Laravel
 
-This package is for Laravel 10, 11 or 12.
+This package is for Laravel 13.
 
 To publish config file, run
 
