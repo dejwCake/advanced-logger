@@ -9,7 +9,9 @@ use Brackets\AdvancedLogger\Interpolations\ResponseInterpolation;
 use Brackets\AdvancedLogger\Loggers\RequestLogger;
 use Brackets\AdvancedLogger\Services\RequestLoggerService;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
+use Monolog\Logger;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
@@ -77,7 +79,7 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.level', 'info')
             ->andReturn('info');
 
-        $monolog = Mockery::mock(\Monolog\Logger::class);
+        $monolog = Mockery::mock(Logger::class);
         $monolog->shouldReceive('log')
             ->once()
             ->with('info', 'GET 200', ['RESPONSE']);
@@ -99,7 +101,7 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.enabled')
             ->andReturn(false);
 
-        $monolog = Mockery::mock(\Monolog\Logger::class);
+        $monolog = Mockery::mock(Logger::class);
         $monolog->shouldNotReceive('log');
 
         (new ReflectionClass($this->logger))->getProperty('monolog')->setValue($this->logger, $monolog);
@@ -137,7 +139,7 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.level', 'info')
             ->andReturn('warning');
 
-        $monolog = Mockery::mock(\Monolog\Logger::class);
+        $monolog = Mockery::mock(Logger::class);
         $monolog->shouldReceive('log')
             ->once()
             ->with('warning', 'DELETE 404', ['RESPONSE']);
@@ -177,7 +179,7 @@ final class LogTest extends TestCase
             ->with('advanced-logger.request.benchmark', 'application')
             ->andReturn('benchmark_fallback_test');
 
-        $monolog = Mockery::mock(\Monolog\Logger::class);
+        $monolog = Mockery::mock(Logger::class);
         $monolog->shouldReceive('log')
             ->once()
             ->withArgs(static fn (string $level, string $message): bool => $level === 'info'
@@ -187,7 +189,7 @@ final class LogTest extends TestCase
         (new ReflectionClass($this->logger))->getProperty('monolog')->setValue($this->logger, $monolog);
 
         $tempDir = sys_get_temp_dir();
-        $app = Mockery::mock(\Illuminate\Contracts\Foundation\Application::class);
+        $app = Mockery::mock(Application::class);
         $app->shouldReceive('storagePath')->andReturn($tempDir);
 
         $responseInterpolationRef = new ReflectionClass(ResponseInterpolation::class);
