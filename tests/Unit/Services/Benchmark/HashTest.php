@@ -22,7 +22,7 @@ final class HashTest extends TestCase
     public function testThrowsRuntimeExceptionIfNeverStarted(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Benchmark 'hash_never_started_test' not started");
+        $this->expectExceptionMessageIs("Benchmark 'hash_never_started_test' not started");
 
         Benchmark::hash('hash_never_started_test');
     }

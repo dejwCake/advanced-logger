@@ -52,7 +52,7 @@ final class RequestLoggerTest extends TestCase
         $config->set('advanced-logger.request.enabled', true);
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Handler class [NonExistentHandlerClass] does not exist');
+        $this->expectExceptionMessageIs('Handler class [NonExistentHandlerClass] does not exist');
 
         $this->app->make(RequestLogger::class);
     }

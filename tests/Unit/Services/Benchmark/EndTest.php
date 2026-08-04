@@ -31,7 +31,7 @@ final class EndTest extends TestCase
     public function testThrowsRuntimeExceptionIfNeverStarted(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Benchmark 'end_never_started_test' not started");
+        $this->expectExceptionMessageIs("Benchmark 'end_never_started_test' not started");
 
         Benchmark::end('end_never_started_test');
     }
