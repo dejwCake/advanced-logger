@@ -9,9 +9,9 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Log\Logger;
 use Monolog\Handler\FormattableHandlerInterface;
 
-final class HashLogCustomizer
+final readonly class HashLogCustomizer
 {
-    public function __construct(private readonly Container $container,)
+    public function __construct(private Container $container,)
     {
     }
 

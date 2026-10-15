@@ -14,12 +14,12 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
 
-final class RequestLoggerListenerHandler
+final readonly class RequestLoggerListenerHandler
 {
     public function __construct(
-        private readonly Repository $config,
-        private readonly Container $container,
-        private readonly BusDispatcher $busDispatcher,
+        private Repository $config,
+        private Container $container,
+        private BusDispatcher $busDispatcher,
     ) {
     }
 

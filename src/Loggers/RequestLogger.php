@@ -12,9 +12,9 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Stringable;
 
-final class RequestLogger implements LoggerInterface
+final readonly class RequestLogger implements LoggerInterface
 {
-    private readonly Logger $monolog;
+    private Logger $monolog;
 
     public function __construct(Repository $config, Container $container, LogManager $logManager,)
     {

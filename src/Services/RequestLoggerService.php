@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\Response;
 
-final class RequestLoggerService
+final readonly class RequestLoggerService
 {
     private const string LOG_CONTEXT = 'RESPONSE';
 
@@ -26,10 +26,10 @@ final class RequestLoggerService
     ];
 
     public function __construct(
-        private readonly Repository $config,
-        private readonly RequestLogger $logger,
-        private readonly RequestInterpolation $requestInterpolation,
-        private readonly ResponseInterpolation $responseInterpolation,
+        private Repository $config,
+        private RequestLogger $logger,
+        private RequestInterpolation $requestInterpolation,
+        private ResponseInterpolation $responseInterpolation,
     ) {
     }
 

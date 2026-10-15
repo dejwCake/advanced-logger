@@ -89,7 +89,7 @@ final class RequestInterpolation extends BaseInterpolation
                 $matches[] = 'clf';
             }
         }
-        if (is_array($matches) && count($matches) === 3) {
+        if (count($matches) === 3) {
             [, $var, $option] = $matches;
             $formats = [
                 'clf' => CarbonImmutable::now()->format('d/M/Y:H:i:s O'),
